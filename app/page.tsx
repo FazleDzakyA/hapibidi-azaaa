@@ -29,6 +29,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [showAudioModal, setShowAudioModal] = useState(true);
   const [showOpening, setShowOpening] = useState(false);
+  const [showFullWebsite, setShowFullWebsite] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -57,6 +58,7 @@ export default function Home() {
 
   const handleFinishOpening = () => {
     setShowOpening(false);
+    setShowFullWebsite(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -73,6 +75,7 @@ export default function Home() {
   };
 
   const handleReplay = () => {
+    setShowFullWebsite(false);
     setShowOpening(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -100,22 +103,22 @@ export default function Home() {
       <LoadingScreen isLoading={isLoading} />
 
       {/* Audio Start Modal */}
-      {!isLoading && (
+      {!isLoading && showAudioModal && (
         <AudioStartModal
           isOpen={showAudioModal}
           onStart={handleStartExperience}
         />
       )}
 
-      {/* Cinematic Opening Sequence */}
+      {/* Cinematic Opening Sequence & Teaser Lock Gate */}
       <AnimatePresence>
-        {showOpening && (
+        {!isLoading && !showAudioModal && showOpening && (
           <CinematicOpening onComplete={handleFinishOpening} />
         )}
       </AnimatePresence>
 
-      {/* Main Website View */}
-      {!isLoading && !showAudioModal && (
+      {/* Main Website View - ONLY rendered when countdown completes OR dev mode password is typed */}
+      {showFullWebsite && (
         <>
           <Navbar />
           <MusicPlayer
