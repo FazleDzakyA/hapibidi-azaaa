@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import MusicPlayer from "@/components/MusicPlayer";
 import AudioStartModal from "@/components/AudioStartModal";
 import LoadingScreen from "@/components/LoadingScreen";
+import PwaInstallPrompt from "@/components/PwaInstallPrompt";
 
 import CinematicOpening from "@/sections/CinematicOpening";
 import HeroSection from "@/sections/HeroSection";
@@ -91,6 +92,9 @@ export default function Home() {
 
       {/* Custom Trailing Cursor */}
       <CustomCursor />
+
+      {/* PWA App Install Banner */}
+      <PwaInstallPrompt />
 
       {/* Initial Loading Screen */}
       <LoadingScreen isLoading={isLoading} />

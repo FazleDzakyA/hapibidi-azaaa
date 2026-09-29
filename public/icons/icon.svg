@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#311042" />
+    </linearGradient>
+    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd6e7" />
+      <stop offset="50%" stop-color="#fbcfe8" />
+      <stop offset="100%" stop-color="#c4b5fd" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" />
+  <circle cx="256" cy="256" r="180" fill="none" stroke="url(#pinkGrad)" stroke-width="8" opacity="0.4" />
+  <g transform="translate(156, 140) scale(4)">
+    <path d="M25 5 C35 15, 45 28, 40 42 C32 50, 18 50, 10 42 C4 28, 15 15, 25 5 Z" fill="#ffd6e7" opacity="0.95" />
+    <path d="M25 5 C15 15, 5 28, 10 42 C18 50, 32 50, 40 42 C46 28, 35 15, 25 5 Z" fill="#fbcfe8" opacity="0.8" />
+    <circle cx="25" cy="28" r="6" fill="#ffffff" />
+  </g>
+  <text x="256" y="420" font-family="'Playfair Display', serif" font-size="48" font-weight="bold" fill="#ffd6e7" text-anchor="middle" letter-spacing="4">LILY 🌸</text>
+</svg>
