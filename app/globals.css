@@ -14,6 +14,8 @@ body {
   overflow-x: hidden;
   selection-background-color: #fbcfe8;
   selection-color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Glassmorphism Styles */
@@ -23,6 +25,7 @@ body {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transform: translateZ(0);
 }
 
 .glass-card-pink {
@@ -31,10 +34,12 @@ body {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(251, 207, 232, 0.25);
   box-shadow: 0 8px 32px 0 rgba(251, 207, 232, 0.15);
+  transform: translateZ(0);
 }
 
 .glass-card-hover {
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
 }
 
 .glass-card-hover:hover {
@@ -93,7 +98,7 @@ body {
   transform: rotateY(180deg);
 }
 
-/* Floating Flowers BG */
+/* Floating Flowers BG & Hardware Acceleration */
 @keyframes floatPetal {
   0% {
     transform: translateY(-10vh) rotate(0deg) translateX(0px);
@@ -111,4 +116,11 @@ body {
 
 .animate-petal {
   animation: floatPetal 12s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.animate-twinkle {
+  will-change: opacity;
+  transform: translateZ(0);
 }

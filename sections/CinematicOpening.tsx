@@ -1,12 +1,21 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Lock, Clock, X, Eye, KeyRound } from "lucide-react";
 
 interface CinematicOpeningProps {
   onComplete: () => void;
   targetDateStr?: string;
+}
+
+interface Particle {
+  id: number;
+  top: number;
+  left: number;
+  size: number;
+  delay: number;
+  duration: number;
 }
 
 export default function CinematicOpening({
@@ -28,12 +37,24 @@ export default function CinematicOpening({
   const [devPassword, setDevPassword] = useState("");
   const [devError, setDevError] = useState("");
 
+  // Memoize background star particles so coordinates stay 100% fixed and smooth (no flickering/kedut-kedut)
+  const particles: Particle[] = useMemo(() => {
+    return Array.from({ length: 45 }).map((_, i) => ({
+      id: i,
+      top: Math.sin(i * 17.5 + 3) * 45 + 50,
+      left: Math.cos(i * 11.2 + 5) * 45 + 50,
+      size: (i % 3) + 2,
+      delay: (i % 5) * 0.8,
+      duration: (i % 4) + 2.5,
+    }));
+  }, []);
+
   useEffect(() => {
     const timers = [
-      setTimeout(() => setStep(1), 1500), // "Aku membuat tempat kecil..."
-      setTimeout(() => setStep(2), 3800), // "...untuk seseorang yang sangat spesial."
-      setTimeout(() => setStep(3), 6200), // "Dan seseorang itu adalah..."
-      setTimeout(() => setStep(4), 8500), // "AZALIA FITRIANI", "Lily 🌸", "Tuan Putriku"
+      setTimeout(() => setStep(1), 1200), // "Aku membuat tempat kecil..."
+      setTimeout(() => setStep(2), 3400), // "...untuk seseorang yang sangat spesial."
+      setTimeout(() => setStep(3), 5600), // "Dan seseorang itu adalah..."
+      setTimeout(() => setStep(4), 7800), // "AZALIA FITRIANI", "Lily 🌸", "Tuan Putriku"
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
@@ -91,8 +112,8 @@ export default function CinematicOpening({
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 1.05 }}
-      transition={{ duration: 1.5, ease: "easeInOut" }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 text-white select-none overflow-y-auto px-6 py-10"
+      transition={{ duration: 1.2, ease: "easeInOut" }}
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 text-white select-none overflow-y-auto px-6 py-10 transform-gpu"
     >
       {/* Night sky background elements */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black pointer-events-none" />
@@ -100,26 +121,26 @@ export default function CinematicOpening({
       {/* Glowing Moon */}
       <div className="absolute top-8 right-8 md:top-16 md:right-28 w-28 h-28 md:w-44 md:h-44 rounded-full bg-gradient-to-tr from-pink-200/40 via-purple-100/30 to-white/80 blur-md shadow-[0_0_80px_rgba(251,207,232,0.6)] pointer-events-none animate-pulse-glow" />
 
-      {/* Floating Sparkles & Light Particles */}
+      {/* Fixed Stable Background Star Particles */}
       <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 45 }).map((_, i) => (
+        {particles.map((p) => (
           <div
-            key={i}
-            className="absolute rounded-full bg-pink-200 animate-twinkle"
+            key={p.id}
+            className="absolute rounded-full bg-pink-200 animate-twinkle transform-gpu"
             style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              width: `${Math.random() * 4 + 2}px`,
-              height: `${Math.random() * 4 + 2}px`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${Math.random() * 3 + 2}s`,
+              top: `${p.top}%`,
+              left: `${p.left}%`,
+              width: `${p.size}px`,
+              height: `${p.size}px`,
+              animationDelay: `${p.delay}s`,
+              animationDuration: `${p.duration}s`,
             }}
           />
         ))}
       </div>
 
       {/* Text Sequences */}
-      <div className="relative z-10 max-w-3xl text-center space-y-6 my-auto">
+      <div className="relative z-10 max-w-3xl text-center space-y-6 my-auto min-h-[420px] flex flex-col items-center justify-center">
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.p
@@ -127,7 +148,7 @@ export default function CinematicOpening({
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 1.2 }}
+              transition={{ duration: 1 }}
               className="text-2xl md:text-4xl font-heading font-light text-pink-100 tracking-wide leading-relaxed"
             >
               Aku membuat tempat kecil...
@@ -140,7 +161,7 @@ export default function CinematicOpening({
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 1.2 }}
+              transition={{ duration: 1 }}
               className="text-2xl md:text-4xl font-heading font-light text-pink-200 tracking-wide leading-relaxed"
             >
               ...untuk seseorang yang sangat spesial.
@@ -153,7 +174,7 @@ export default function CinematicOpening({
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 1.2 }}
+              transition={{ duration: 1 }}
               className="text-2xl md:text-4xl font-heading font-light text-purple-200 tracking-wide leading-relaxed"
             >
               Dan seseorang itu adalah...
@@ -163,16 +184,16 @@ export default function CinematicOpening({
           {step >= 4 && (
             <motion.div
               key="step4"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
-              className="space-y-6"
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="space-y-6 w-full"
             >
               {/* Full Name */}
               <motion.h1
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.2 }}
+                transition={{ duration: 0.9, delay: 0.1 }}
                 className="text-4xl md:text-7xl font-bold font-heading text-transparent bg-clip-text bg-gradient-to-r from-pink-200 via-rose-300 to-purple-200 text-glow-pink tracking-wider"
               >
                 AZALIA FITRIANI
@@ -182,7 +203,7 @@ export default function CinematicOpening({
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 0.6 }}
+                transition={{ duration: 0.9, delay: 0.4 }}
                 className="flex items-center justify-center space-x-4 text-xl md:text-3xl font-heading font-medium text-pink-200"
               >
                 <span>Lily 🌸</span>
@@ -194,7 +215,7 @@ export default function CinematicOpening({
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 1 }}
+                transition={{ duration: 0.9, delay: 0.7 }}
                 className="pt-1 text-xs md:text-sm font-mono text-pink-300/80 uppercase tracking-widest"
               >
                 Happy Birthday • 10 October 2026
@@ -202,12 +223,12 @@ export default function CinematicOpening({
 
               {/* COUNTDOWN TO SPECIAL DAY CARD */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 1.4 }}
+                transition={{ duration: 0.9, delay: 1 }}
                 className="py-4"
               >
-                <div className="glass-card-pink p-6 md:p-8 rounded-3xl border border-pink-300/30 max-w-xl mx-auto shadow-2xl space-y-4">
+                <div className="glass-card-pink p-6 md:p-8 rounded-3xl border border-pink-300/30 max-w-xl mx-auto shadow-2xl space-y-4 transform-gpu">
                   <div className="flex items-center justify-center space-x-2 text-xs font-mono text-pink-300 uppercase tracking-wider">
                     <Clock className="w-4 h-4 text-pink-300 animate-pulse" />
                     <span>Countdown To Special Day 🌸</span>
@@ -244,14 +265,14 @@ export default function CinematicOpening({
 
               {/* Action Button */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, delay: 1.8 }}
+                transition={{ duration: 0.9, delay: 1.3 }}
                 className="pt-2 flex flex-col items-center space-y-4"
               >
                 <button
                   onClick={handleButtonClick}
-                  className={`group relative inline-flex items-center space-x-3 px-10 py-5 text-lg font-bold text-slate-900 rounded-full shadow-lg transition-all duration-300 cursor-pointer overflow-hidden ${
+                  className={`group relative inline-flex items-center space-x-3 px-10 py-5 text-lg font-bold text-slate-900 rounded-full shadow-lg transition-all duration-300 cursor-pointer overflow-hidden transform-gpu ${
                     timeLeft.isUnlocked
                       ? "bg-gradient-to-r from-pink-300 via-rose-300 to-purple-300 hover:scale-105 shadow-pink-500/40"
                       : "bg-gradient-to-r from-pink-300/90 via-rose-300/90 to-purple-300/90 hover:scale-105 shadow-pink-500/30"
@@ -296,12 +317,12 @@ export default function CinematicOpening({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setShowLockedModal(false)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-xl p-4 text-center"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-xl p-4 text-center transform-gpu"
           >
             <motion.div
-              initial={{ scale: 0.85, y: 20 }}
+              initial={{ scale: 0.9, y: 15 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.85, y: 20 }}
+              exit={{ scale: 0.9, y: 15 }}
               onClick={(e) => e.stopPropagation()}
               className="relative max-w-md w-full glass-card-pink border border-pink-300/40 p-8 rounded-3xl shadow-2xl"
             >
@@ -352,12 +373,12 @@ export default function CinematicOpening({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setShowDevPassModal(false)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-xl p-4 text-center"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-xl p-4 text-center transform-gpu"
           >
             <motion.div
-              initial={{ scale: 0.85, y: 20 }}
+              initial={{ scale: 0.9, y: 15 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.85, y: 20 }}
+              exit={{ scale: 0.9, y: 15 }}
               onClick={(e) => e.stopPropagation()}
               className="relative max-w-md w-full glass-card-pink border border-purple-300/40 p-8 rounded-3xl shadow-2xl"
             >
