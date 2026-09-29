@@ -37,15 +37,15 @@ export default function CinematicOpening({
   const [devPassword, setDevPassword] = useState("");
   const [devError, setDevError] = useState("");
 
-  // Memoize background star particles so coordinates stay 100% fixed and smooth (no flickering/kedut-kedut)
+  // Memoize background glowing star lights across 2% - 98% bounds with soft glowing aura
   const particles: Particle[] = useMemo(() => {
-    return Array.from({ length: 45 }).map((_, i) => ({
+    return Array.from({ length: 60 }).map((_, i) => ({
       id: i,
-      top: Math.sin(i * 17.5 + 3) * 45 + 50,
-      left: Math.cos(i * 11.2 + 5) * 45 + 50,
-      size: (i % 3) + 2,
-      delay: (i % 5) * 0.8,
-      duration: (i % 4) + 2.5,
+      left: ((i * 37 + 13) % 96) + 2,
+      top: ((i * 53 + 7) % 96) + 2,
+      size: i % 3 === 0 ? 4.5 : i % 2 === 0 ? 3 : 2,
+      delay: (i % 7) * 0.5,
+      duration: (i % 4) * 0.8 + 2,
     }));
   }, []);
 
@@ -121,12 +121,12 @@ export default function CinematicOpening({
       {/* Glowing Moon */}
       <div className="absolute top-8 right-8 md:top-16 md:right-28 w-28 h-28 md:w-44 md:h-44 rounded-full bg-gradient-to-tr from-pink-200/40 via-purple-100/30 to-white/80 blur-md shadow-[0_0_80px_rgba(251,207,232,0.6)] pointer-events-none animate-pulse-glow" />
 
-      {/* Fixed Stable Background Star Particles */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Fixed Shining Glowing Star Lights */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {particles.map((p) => (
           <div
             key={p.id}
-            className="absolute rounded-full bg-pink-200 animate-twinkle transform-gpu"
+            className="absolute rounded-full bg-white animate-twinkle transform-gpu shadow-[0_0_8px_rgba(255,214,231,0.9),0_0_16px_rgba(251,207,232,0.7)]"
             style={{
               top: `${p.top}%`,
               left: `${p.left}%`,
