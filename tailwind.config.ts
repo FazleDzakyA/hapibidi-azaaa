@@ -28,12 +28,12 @@ const config: Config = {
       },
       keyframes: {
         float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-15px)' },
+          '0%, 100%': { transform: 'translate3d(0, 0px, 0)' },
+          '50%': { transform: 'translate3d(0, -12px, 0)' },
         },
         pulseGlow: {
-          '0%, 100%': { opacity: '0.4', filter: 'drop-shadow(0 0 15px rgba(196, 181, 253, 0.6))' },
-          '50%': { opacity: '0.9', filter: 'drop-shadow(0 0 30px rgba(251, 207, 232, 0.9))' },
+          '0%, 100%': { opacity: '0.5' },
+          '50%': { opacity: '0.95' },
         },
         sparkle: {
           '0%, 100%': { opacity: '0', transform: 'scale(0)' },

@@ -7,7 +7,7 @@
   --foreground: #ffffff;
 }
 
-body {
+html, body {
   color: var(--foreground);
   background: var(--background);
   font-family: 'Poppins', sans-serif;
@@ -16,56 +16,70 @@ body {
   selection-color: #0f172a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-/* Glassmorphism Styles */
+/* Glassmorphism Styles Hardware Accelerated */
 .glass-card {
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 .glass-card-pink {
-  background: rgba(255, 214, 231, 0.1);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 214, 231, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(251, 207, 232, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(251, 207, 232, 0.15);
-  transform: translateZ(0);
+  box-shadow: 0 8px 32px 0 rgba(251, 207, 232, 0.12);
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* Mobile backdrop-filter fallback for buttery smooth 60fps */
+@media (max-width: 768px) {
+  .glass-card, .glass-card-pink {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
 }
 
 .glass-card-hover {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
   will-change: transform;
 }
 
 .glass-card-hover:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translate3d(0, -6px, 0) scale(1.01);
   border-color: rgba(251, 207, 232, 0.5);
-  box-shadow: 0 15px 40px 0 rgba(251, 207, 232, 0.3);
+  box-shadow: 0 12px 30px 0 rgba(251, 207, 232, 0.25);
 }
 
 .glass-pill {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: translate3d(0, 0, 0);
 }
 
-/* Glowing text */
+/* Glowing text optimized */
 .text-glow-pink {
-  text-shadow: 0 0 15px rgba(251, 207, 232, 0.8), 0 0 30px rgba(255, 214, 231, 0.5);
+  text-shadow: 0 0 12px rgba(251, 207, 232, 0.7);
 }
 
 .text-glow-purple {
-  text-shadow: 0 0 15px rgba(196, 181, 253, 0.8), 0 0 30px rgba(233, 213, 255, 0.5);
+  text-shadow: 0 0 12px rgba(196, 181, 253, 0.7);
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -75,10 +89,6 @@ body {
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(to bottom, #ffd6e7, #c4b5fd);
   border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #fbcfe8, #e9d5ff);
 }
 
 /* Perspective for 3D Cards */
@@ -92,6 +102,7 @@ body {
 
 .backface-hidden {
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .rotate-y-180 {
@@ -101,15 +112,15 @@ body {
 /* Floating Flowers BG & Hardware Acceleration */
 @keyframes floatPetal {
   0% {
-    transform: translateY(-10vh) rotate(0deg) translateX(0px);
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
     opacity: 0.8;
   }
   50% {
-    transform: translateY(50vh) rotate(180deg) translateX(50px);
+    transform: translate3d(30px, 50vh, 0) rotate(180deg);
     opacity: 1;
   }
   100% {
-    transform: translateY(110vh) rotate(360deg) translateX(-20px);
+    transform: translate3d(-10px, 110vh, 0) rotate(360deg);
     opacity: 0.2;
   }
 }
@@ -117,10 +128,10 @@ body {
 .animate-petal {
   animation: floatPetal 12s linear infinite;
   will-change: transform;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
 }
 
 .animate-twinkle {
   will-change: opacity;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
 }
