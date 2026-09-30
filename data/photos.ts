@@ -32,7 +32,7 @@ export const defaultPhotos: PhotoItem[] = [
     id: 4,
     image: "/images/photo4.jpg",
     title: "Kecantikanmu",
-    caption: "Kecantikanmu bukan hanya di raut wajahmu — tapi di cara kamu tertawa, di caramu peduli, dan di cahaya yang kamu bawa ke mana pun kamu pergi.",
+    caption: "Kecantikanmu bukan hanya di raut wajahmu — tapi di sorot matamu yang hangat, di caramu peduli, dan di cahaya yang kamu bawa ke mana pun kamu pergi.",
     date: "Simply Beautiful"
   },
   {
