@@ -79,9 +79,11 @@ const secretConstellations: ConstellationNote[] = [
 ];
 
 export default function SecretPage() {
-  const [password, setPassword] = useState("");
+  const [pin, setPin] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [shake, setShake] = useState(false);
+  const CORRECT_PIN = "02072026";
+  const PIN_LENGTH = 8;
 
   // Cake Birthday Candle Blow State
   const [candlesLit, setCandlesLit] = useState(false);
@@ -91,20 +93,34 @@ export default function SecretPage() {
   // Constellation Modal State
   const [selectedConstellation, setSelectedConstellation] = useState<ConstellationNote | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password.trim().toLowerCase() === "azalia") {
-      setIsAuthenticated(true);
-      setErrorMsg("");
-      // Little celebration confetti
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
-    } else {
-      setErrorMsg("Ups! Password kurang tepat 🌸 (Petunjuk: Nama indah seseorang yang sangat disayangi)");
+  const handlePinPress = (digit: string) => {
+    if (pin.length >= PIN_LENGTH) return;
+    const newPin = pin + digit;
+    setPin(newPin);
+
+    if (newPin.length === PIN_LENGTH) {
+      setTimeout(() => {
+        if (newPin === CORRECT_PIN) {
+          setIsAuthenticated(true);
+          confetti({
+            particleCount: 120,
+            spread: 80,
+            origin: { y: 0.6 },
+            colors: ["#ffd6e7", "#fbcfe8", "#e9d5ff", "#c4b5fd", "#ffffff"],
+          });
+        } else {
+          setShake(true);
+          setTimeout(() => {
+            setPin("");
+            setShake(false);
+          }, 700);
+        }
+      }, 150);
     }
+  };
+
+  const handleDelete = () => {
+    setPin((p) => p.slice(0, -1));
   };
 
   const handleLightCandles = () => {
@@ -148,53 +164,78 @@ export default function SecretPage() {
       {/* Main Content */}
       <main className="relative z-20 max-w-4xl mx-auto w-full my-auto py-8">
         {!isAuthenticated ? (
-          /* LOGIN SCREEN */
+          /* PIN LOCK SCREEN */
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="glass-card-pink p-8 md:p-14 rounded-3xl border border-pink-300/40 text-center shadow-2xl max-w-md mx-auto relative overflow-hidden"
+            className="flex flex-col items-center justify-center max-w-xs mx-auto w-full"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-pink-400/10 rounded-full blur-2xl pointer-events-none" />
-
-            {/* Glowing Heart Lock Icon */}
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-tr from-pink-300 via-rose-300 to-purple-300 p-0.5 shadow-xl shadow-pink-500/30 flex items-center justify-center animate-float">
-              <div className="w-full h-full bg-slate-950 rounded-full flex items-center justify-center text-pink-300">
+            {/* Lock Icon */}
+            <div className="w-20 h-20 mx-auto mb-5 rounded-full bg-gradient-to-tr from-pink-300 via-rose-300 to-purple-300 p-0.5 shadow-xl shadow-pink-500/30 flex items-center justify-center animate-float">
+              <div className="w-full h-full bg-slate-950 rounded-full flex items-center justify-center">
                 <Lock className="w-9 h-9 text-pink-300" />
               </div>
             </div>
 
-            <h1 className="text-2xl md:text-3xl font-bold font-heading text-transparent bg-clip-text bg-gradient-to-r from-pink-200 via-rose-200 to-purple-200 text-glow-pink mb-2">
+            <h1 className="text-2xl font-bold font-heading text-transparent bg-clip-text bg-gradient-to-r from-pink-200 via-rose-200 to-purple-200 text-glow-pink mb-1">
               Secret Sanctuary 🔒
             </h1>
-            <p className="text-xs md:text-sm text-pink-200/80 mb-6 font-mono leading-relaxed">
-              Kamar rahasia ini dilindungi oleh kata kunci paling istimewa 🌸
-            </p>
+            <p className="text-xs text-pink-300/70 font-mono mb-8">Masukkan 8 angka PIN rahasia</p>
 
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="relative">
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Masukkan kata kunci..."
-                  className="w-full px-6 py-4 rounded-full bg-slate-900/90 border border-pink-300/30 text-pink-100 placeholder-pink-300/40 font-mono text-sm text-center focus:outline-none focus:border-pink-300 shadow-inner transition"
+            {/* 8 PIN Dot Indicators */}
+            <motion.div
+              animate={shake ? { x: [-10, 10, -8, 8, -4, 4, 0] } : { x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center justify-center space-x-3 mb-10"
+            >
+              {Array.from({ length: PIN_LENGTH }).map((_, i) => (
+                <div
+                  key={i}
+                  className={`rounded-full transition-all duration-200 ${
+                    i < pin.length
+                      ? "w-4 h-4 bg-gradient-to-b from-pink-300 to-purple-400 shadow-[0_0_10px_rgba(251,207,232,0.8)]"
+                      : "w-3.5 h-3.5 border-2 border-pink-300/50 bg-transparent"
+                  }`}
                 />
-              </div>
+              ))}
+            </motion.div>
 
-              {errorMsg && (
-                <p className="text-xs text-rose-300 bg-rose-950/60 p-3 rounded-2xl border border-rose-500/30 font-mono">
-                  {errorMsg}
-                </p>
-              )}
+            {/* Numpad Grid */}
+            <div className="grid grid-cols-3 gap-4 w-full max-w-[260px]">
+              {["1","2","3","4","5","6","7","8","9"].map((digit) => (
+                <button
+                  key={digit}
+                  onClick={() => handlePinPress(digit)}
+                  className="w-full aspect-square rounded-full glass-card-pink border border-pink-300/25 text-white font-bold text-2xl active:scale-90 hover:border-pink-300/60 hover:bg-pink-400/10 transition-all duration-150 shadow-lg"
+                >
+                  {digit}
+                </button>
+              ))}
 
+              {/* Bottom row: empty, 0, delete */}
+              <div />
               <button
-                type="submit"
-                className="w-full py-4 rounded-full bg-gradient-to-r from-pink-300 via-rose-300 to-purple-300 text-slate-950 font-bold text-sm shadow-lg shadow-pink-500/25 hover:scale-105 active:scale-95 transition duration-300"
+                onClick={() => handlePinPress("0")}
+                className="w-full aspect-square rounded-full glass-card-pink border border-pink-300/25 text-white font-bold text-2xl active:scale-90 hover:border-pink-300/60 hover:bg-pink-400/10 transition-all duration-150 shadow-lg"
               >
-                Buka Kamar Rahasia ✨
+                0
               </button>
-            </form>
+              <button
+                onClick={handleDelete}
+                className="w-full aspect-square rounded-full glass-pill border border-pink-300/20 text-pink-300 flex items-center justify-center active:scale-90 hover:bg-pink-400/10 transition-all duration-150"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z" />
+                </svg>
+              </button>
+            </div>
+
+            {shake && (
+              <p className="mt-6 text-xs text-rose-300 font-mono animate-pulse">
+                PIN salah, coba lagi 🌸
+              </p>
+            )}
           </motion.div>
         ) : (
           /* UNLOCKED CREATIVE SECRET ROOM */
