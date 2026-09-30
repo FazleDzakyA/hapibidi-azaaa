@@ -100,7 +100,7 @@ export default function CinematicOpening({
 
   const handleDevSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (devPassword.trim() === "LilyDev-9481-Special#2026") {
+    if (devPassword.trim() === "LilyDev-9481-Special#2026a9ab9676-05bf-4f9c-84c5") {
       setShowDevPassModal(false);
       onComplete();
     } else {
