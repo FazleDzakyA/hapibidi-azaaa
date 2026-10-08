@@ -10,7 +10,7 @@ export const defaultLetter: LetterConfig = {
   title: "A Letter For Lily 💌",
   salutation: "Hi Lily 🌸",
   paragraphs: [
-    "Selamat ulang tahun yang ke-spesial!",
+    "Selamat ulang tahun Azalia Fitriani Tuan Putriku, cantik indah manis gelo yang ke-18!!!",
     "Aku membuat tempat kecil ini bukan sekadar ingin menunjukkan sesuatu yang megah, tapi karena aku ingin memberikan hadiah yang dibuat secara tulus dengan waktu, pikiran, dan segenap perasaanku.",
     "Setiap perpaduan warna soft pink & lavender, setiap animasi bunga lily yang bermekaran, dan setiap detail di sini ditulis sambil mengingat momen-momen manis bersamamu.",
     "Terima kasih sudah hadir dan menjadi seseorang yang begitu berharga serta selalu membawa kehangatan di sekitarmu.",
