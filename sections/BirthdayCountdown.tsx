@@ -65,13 +65,11 @@ export default function BirthdayCountdown() {
             className="glass-card-pink p-8 md:p-12 rounded-3xl text-center shadow-2xl border border-pink-300/40"
           >
             <PartyPopper className="w-16 h-16 mx-auto text-pink-300 mb-4 animate-bounce" />
-            <h2 className="text-2xl md:text-4xl font-bold font-heading text-transparent bg-clip-text bg-gradient-to-r from-pink-200 via-rose-300 to-white text-glow-pink">
+            <h2 className="text-3xl md:text-5xl font-bold font-heading text-transparent bg-clip-text bg-gradient-to-r from-pink-200 via-rose-300 to-white text-glow-pink">
               🎉 TODAY IS YOUR SPECIAL DAY 🎉
             </h2>
-            <p className="text-pink-200/90 mt-3 text-base md:text-lg font-light leading-relaxed">
-              Selamat ulang tahun Azalia Fitriani Tuan Putriku,<br/>
-              cantik 💖 indah 🌸 manis 🍯 gelo 😍<br/>
-              yang ke-<span className="font-bold text-pink-300 text-2xl">18</span>!!! 🎊✨🥳
+            <p className="text-pink-200/90 mt-3 text-lg font-light">
+              Selamat ulang tahun, Lily! Semoga harimu penuh kejutan dan cinta!
             </p>
           </motion.div>
         ) : (
